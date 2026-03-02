@@ -1,24 +1,53 @@
 {
-    "name": "Sistema de Prórrogas",
-    "short_name": "EdMed",
-    "description": "Sistema de gestión de prórrogas - Ciencias Económicas-UES",
-    "start_url": "./",
+    "name": "Sistema de Reservas EDMED",
+    "short_name": "ReservasEDMED",
+    "description": "Sistema de reserva de laboratorios EDMED",
+    "start_url": "https://script.google.com/macros/s/AKfycbzROcSrjgizGmrffFENHu7wdvSTXSpIFZbwDbhhcZkYrMts7J4noJkeIvF2gdxnuOZZ/exec",
+    "scope": "/",
     "display": "standalone",
-    "background_color": "#bbf7d0",
-    "theme_color": "#16a34a",
-    "orientation": "any",
+    "orientation": "portrait-primary",
+    "theme_color": "#1a1a2e",
+    "background_color": "#0f0f1a",
+    "lang": "es",
+    "dir": "ltr",
+    "categories": [
+        "education",
+        "productivity"
+    ],
     "icons": [
         {
-            "src": "icon-192.png",
+            "src": "icons/icon-192.png",
             "sizes": "192x192",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
         },
         {
-            "src": "icon-512.png",
+            "src": "icons/icon-512.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "icons/screenshot-desktop.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Sistema de Reservas en escritorio"
+        },
+        {
+            "src": "icons/screenshot-mobile.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Sistema de Reservas en móvil"
         }
     ]
 }

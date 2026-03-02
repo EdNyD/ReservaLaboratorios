@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Generar Íconos — ReservasEDMED</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a1a;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        canvas {
+            border-radius: 20%;
+            margin: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #7c3aed, #00d4ff);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        h2 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #8888aa;
+            margin-bottom: 1.5rem;
+        }
+
+        .step {
+            background: #12122a;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .step b {
+            color: #00d4ff;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>🎨 Generador de Íconos — ReservasEDMED</h2>
+    <p>Haz clic en los botones para descargar los íconos y guárdalos en la carpeta <b>icons/</b></p>
+
+    <div class="step">
+        <b>Instrucciones:</b><br>
+        1. Haz clic en cada botón de descarga.<br>
+        2. Guarda los archivos con exactamente el nombre indicado.<br>
+        3. Mueve los 3 archivos a la carpeta <b>ReservasEdmed-PWA/icons/</b>
+    </div>
+
+    <canvas id="c192" width="192" height="192"></canvas>
+    <canvas id="c512" width="512" height="512"></canvas>
+    <canvas id="cmask" width="512" height="512"></canvas>
+
+    <br>
+    <button class="btn" onclick="downloadIcon('c192', 'icon-192.png')">⬇ Descargar icon-192.png</button>
+    <button class="btn" onclick="downloadIcon('c512', 'icon-512.png')">⬇ Descargar icon-512.png</button>
+    <button class="btn" onclick="downloadIcon('cmask', 'icon-maskable-512.png')">⬇ Descargar
+        icon-maskable-512.png</button>
+
+    <script>
+        function drawIcon(canvasId, size, maskable) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const s = size;
+            const pad = maskable ? s * 0.1 : 0;
+
+            // Background gradient
+            const bg = ctx.createLinearGradient(0, 0, s, s);
+            bg.addColorStop(0, '#1a1a2e');
+            bg.addColorStop(1, '#0f0f1a');
+            ctx.fillStyle = bg;
+            if (maskable) {
+                ctx.fillRect(0, 0, s, s);
+            } else {
+                const r = s * 0.2;
+                ctx.beginPath();
+                ctx.moveTo(r, 0); ctx.lineTo(s - r, 0);
+                ctx.quadraticCurveTo(s, 0, s, r);
+                ctx.lineTo(s, s - r);
+                ctx.quadraticCurveTo(s, s, s - r, s);
+                ctx.lineTo(r, s);
+                ctx.quadraticCurveTo(0, s, 0, s - r);
+                ctx.lineTo(0, r);
+                ctx.quadraticCurveTo(0, 0, r, 0);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            const cx = s / 2;
+            const cy = s / 2;
+            const unit = (s - pad * 2) * 0.5;
+
+            // --- Monitor body ---
+            ctx.shadowColor = '#00d4ff';
+            ctx.shadowBlur = s * 0.1;
+
+            const monW = unit * 1.3, monH = unit * 0.95;
+            const monX = cx - monW / 2, monY = cy - monH / 2 - unit * 0.06;
+            const monR = unit * 0.1;
+
+            // Outer bezel (purple-to-cyan gradient)
+            const monGrad = ctx.createLinearGradient(monX, monY, monX + monW, monY + monH);
+            monGrad.addColorStop(0, '#7c3aed');
+            monGrad.addColorStop(1, '#00d4ff');
+            ctx.fillStyle = monGrad;
+            ctx.beginPath();
+            ctx.moveTo(monX + monR, monY);
+            ctx.lineTo(monX + monW - monR, monY);
+            ctx.quadraticCurveTo(monX + monW, monY, monX + monW, monY + monR);
+            ctx.lineTo(monX + monW, monY + monH - monR);
+            ctx.quadraticCurveTo(monX + monW, monY + monH, monX + monW - monR, monY + monH);
+            ctx.lineTo(monX + monR, monY + monH);
+            ctx.quadraticCurveTo(monX, monY + monH, monX, monY + monH - monR);
+            ctx.lineTo(monX, monY + monR);
+            ctx.quadraticCurveTo(monX, monY, monX + monR, monY);
+            ctx.closePath();
+            ctx.fill();
+
+            // Inner screen (dark)
+            const brd = unit * 0.07;
+            ctx.fillStyle = '#0a0f1e';
+            ctx.beginPath();
+            ctx.roundRect(monX + brd, monY + brd, monW - brd * 2, monH - brd * 2, monR * 0.5);
+            ctx.fill();
+
+            // Screen glow / content (cyan lines simulating UI)
+            ctx.shadowColor = '#00d4ff';
+            ctx.shadowBlur = s * 0.05;
+            const linesY = monY + brd + unit * 0.1;
+            const linesH = monH - brd * 2 - unit * 0.18;
+            const lineCount = 4;
+            for (let i = 0; i < lineCount; i++) {
+                const ratio = i / (lineCount - 1);
+                const lc = ctx.createLinearGradient(0, 0, s, 0);
+                lc.addColorStop(0, `rgba(0,212,255,${0.9 - ratio * 0.3})`);
+                lc.addColorStop(1, `rgba(124,58,237,${0.7 - ratio * 0.2})`);
+                ctx.fillStyle = lc;
+                const lw = (monW - brd * 2 - unit * 0.12) * (i === 0 ? 0.85 : 0.55 + Math.random() * 0.25);
+                const lh = unit * 0.055;
+                const lx = monX + brd + unit * 0.06;
+                const ly = linesY + (linesH / (lineCount - 1)) * i - lh / 2;
+                ctx.beginPath();
+                ctx.roundRect(lx, ly, lw, lh, lh / 2);
+                ctx.fill();
+            }
+
+            ctx.shadowBlur = 0;
+
+            // --- Monitor stand ---
+            ctx.fillStyle = 'rgba(124,58,237,0.7)';
+            const stW = unit * 0.15, stH = unit * 0.25;
+            const stX = cx - stW / 2, stY = monY + monH;
+            ctx.fillRect(stX, stY, stW, stH);
+
+            // Stand base
+            const baseW = unit * 0.55, baseH = unit * 0.08;
+            const baseX = cx - baseW / 2, baseY = stY + stH;
+            const baseGrad = ctx.createLinearGradient(baseX, 0, baseX + baseW, 0);
+            baseGrad.addColorStop(0, '#7c3aed');
+            baseGrad.addColorStop(1, '#00d4ff');
+            ctx.fillStyle = baseGrad;
+            ctx.beginPath();
+            ctx.roundRect(baseX, baseY, baseW, baseH, baseH / 2);
+            ctx.fill();
+
+            // --- Small PC badge (bottom-right) ---
+            ctx.shadowColor = '#00d4ff';
+            ctx.shadowBlur = s * 0.06;
+            const bdgR = unit * 0.22;
+            const bdgX = cx + unit * 0.52, bdgY = cy + unit * 0.42;
+            ctx.fillStyle = 'rgba(0,212,255,0.92)';
+            ctx.beginPath();
+            ctx.arc(bdgX, bdgY, bdgR, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#0a0a1a';
+            ctx.font = `bold ${bdgR * 0.95}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('PC', bdgX, bdgY);
+            ctx.shadowBlur = 0;
+        }
+
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Draw all icons
+        drawIcon('c192', 192, false);
+        drawIcon('c512', 512, false);
+        drawIcon('cmask', 512, true);
+    </script>
+</body>
+
+</html>
