@@ -1,16 +1,16 @@
 // =====================================================
 // SERVICE WORKER — ReservasEDMED PWA
 // =====================================================
-const CACHE_NAME = 'reservas-edmed-v1';
+const CACHE_NAME = 'reservas-edmed-v2';
 const APP_URL = 'https://script.google.com/macros/s/AKfycbzROcSrjgizGmrffFENHu7wdvSTXSpIFZbwDbhhcZkYrMts7J4noJkeIvF2gdxnuOZZ/exec';
 
 // Archivos a guardar en caché (la página de instalación local)
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/icons/icon-192.png',
-    '/icons/icon-512.png',
+    './',
+    './index.html',
+    './manifest.json',
+    './icons/icon-192.png',
+    './icons/icon-512.png',
 ];
 
 // --- Instalación del Service Worker ---
@@ -62,7 +62,7 @@ self.addEventListener('fetch', (event) => {
                 return networkResponse;
             }).catch(() => {
                 // Fallback si no hay red
-                return caches.match('/index.html');
+                return caches.match('./index.html');
             });
         })
     );

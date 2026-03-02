@@ -3,7 +3,7 @@
     "short_name": "ReservasEDMED",
     "description": "Sistema de reserva de laboratorios EDMED",
     "start_url": "https://script.google.com/macros/s/AKfycbzROcSrjgizGmrffFENHu7wdvSTXSpIFZbwDbhhcZkYrMts7J4noJkeIvF2gdxnuOZZ/exec",
-    "scope": "/",
+    "scope": "./",
     "display": "standalone",
     "orientation": "portrait-primary",
     "theme_color": "#1a1a2e",
